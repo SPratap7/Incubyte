@@ -24,6 +24,12 @@ class StringCalculatorTest {
     void add() {
         stringCalculator.setNumbers("");
         assertEquals(0, stringCalculator.add());
+        stringCalculator.setNumbers(" ");
+        assertEquals(0, stringCalculator.add());
+        stringCalculator.setNumbers("\n");
+        assertEquals(0, stringCalculator.add());
+        stringCalculator.setNumbers("  \n");
+        assertEquals(0, stringCalculator.add());
         stringCalculator.setNumbers("0");
         assertEquals(0, stringCalculator.add());
         stringCalculator.setNumbers("1");
