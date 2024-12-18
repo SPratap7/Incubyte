@@ -40,6 +40,8 @@ class StringCalculatorTest {
         assertEquals(9, stringCalculator.add());
         stringCalculator.setNumbers("5\n4,1");
         assertEquals(10, stringCalculator.add());
+        stringCalculator.setNumbers("//;\n4;1");
+        assertEquals(5, stringCalculator.add());
     }
 
 }
