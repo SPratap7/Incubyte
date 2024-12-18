@@ -23,7 +23,7 @@ public class StringCalculator {
         if(numbers.isBlank()) {
             return 0;
         } else {
-            String[] numbersArray = numbers.split(",");
+            String[] numbersArray = numbers.split("[,\n]");
             int sum = 0;
             for(String number : numbersArray) {
                 int current = Integer.parseInt(number);
