@@ -42,6 +42,12 @@ class StringCalculatorTest {
         assertEquals(10, stringCalculator.add());
         stringCalculator.setNumbers("//;\n4;1");
         assertEquals(5, stringCalculator.add());
+        try {
+            stringCalculator.setNumbers("-4,1");
+            stringCalculator.add();
+        } catch (IllegalArgumentException e) {
+            assertEquals("Negatives not allowed: -4", e.getMessage());
+        }
     }
 
 }
