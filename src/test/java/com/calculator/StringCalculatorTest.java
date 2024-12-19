@@ -50,6 +50,8 @@ class StringCalculatorTest {
         }
         stringCalculator.setNumbers("4,1001");
         assertEquals(4, stringCalculator.add());
+        stringCalculator.setNumbers("//[***]\n1***2***3");
+        assertEquals(6, stringCalculator.add());
     }
 
 }
