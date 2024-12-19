@@ -35,9 +35,17 @@ public class StringCalculator {
 
     int arraySum(String[] numbersArray) {
         int sum = 0;
+        StringBuilder negativeString = new StringBuilder();
         for(String number : numbersArray) {
             int current = Integer.parseInt(number);
+            if(current < 0){
+                negativeString.append(number).append(",");
+            }
             sum += current;
+        }
+        if(!negativeString.isEmpty()) {
+            negativeString.deleteCharAt(negativeString.length() - 1);
+            throw new IllegalArgumentException("Negatives not allowed: " + negativeString);
         }
         return sum;
     }
