@@ -41,7 +41,9 @@ public class StringCalculator {
             if(current < 0){
                 negativeString.append(number).append(",");
             }
-            sum += current;
+            if(current < 1000) {
+                sum += current;
+            }
         }
         if(!negativeString.isEmpty()) {
             negativeString.deleteCharAt(negativeString.length() - 1);
