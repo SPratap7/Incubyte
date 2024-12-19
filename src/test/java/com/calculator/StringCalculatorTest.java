@@ -48,6 +48,8 @@ class StringCalculatorTest {
         } catch (IllegalArgumentException e) {
             assertEquals("Negatives not allowed: -4", e.getMessage());
         }
+        stringCalculator.setNumbers("4,1001");
+        assertEquals(4, stringCalculator.add());
     }
 
 }
