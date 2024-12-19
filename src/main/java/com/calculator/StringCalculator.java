@@ -32,7 +32,6 @@ public class StringCalculator {
             if(!delimiter.equals(",")) {
                 numbers = delimiterAndContent.get(1);
             }
-            delimiter = Pattern.quote(delimiter);
             String[] numbersArray = numbers.split(delimiter + "|\n");
             return arraySum(numbersArray);
         }
@@ -46,15 +45,27 @@ public class StringCalculator {
         Matcher matcher = pattern.matcher(content);
         if (matcher.find()) {
             String tempDelimiter = matcher.group(1);
-            if(tempDelimiter.matches("\\[(.+)\\]")) {
-                tempDelimiter = tempDelimiter.substring(1, tempDelimiter.length() - 1);
-            }
-            delimiter = tempDelimiter;
+            delimiter = createDelimiterRegex(tempDelimiter);
             content = matcher.group(2);
         }
         delimiterAndContent.add(delimiter);
         delimiterAndContent.add(content);
         return delimiterAndContent;
+    }
+
+    String createDelimiterRegex(String delimiter) {
+        String[] delimiterParts = delimiter.split("]\\[");
+        for (int i = 0; i < delimiterParts.length; i++) {
+            delimiterParts[i] = delimiterParts[i].replace("[", "").replace("]", "");
+        }
+        StringBuilder regexBuilder = new StringBuilder();
+        for (String part : delimiterParts) {
+            if (!regexBuilder.isEmpty()) {
+                regexBuilder.append("|");
+            }
+            regexBuilder.append(Pattern.quote(part));
+        }
+        return regexBuilder.toString();
     }
 
     int arraySum(String[] numbersArray) {
@@ -63,14 +74,17 @@ public class StringCalculator {
         for(String number : numbersArray) {
             int current = Integer.parseInt(number);
             if(current < 0){
-                negativeString.append(number).append(",");
+                if(negativeString.isEmpty()){
+                    negativeString.append(number);
+                } else{
+                    negativeString.append(",").append(number);
+                }
             }
             if(current < 1000) {
                 sum += current;
             }
         }
         if(!negativeString.isEmpty()) {
-            negativeString.deleteCharAt(negativeString.length() - 1);
             throw new IllegalArgumentException("Negatives not allowed: " + negativeString);
         }
         return sum;
