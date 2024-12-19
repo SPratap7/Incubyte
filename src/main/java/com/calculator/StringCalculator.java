@@ -1,5 +1,9 @@
 package com.calculator;
 
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class StringCalculator {
     String numbers;
 
@@ -23,14 +27,34 @@ public class StringCalculator {
         if(numbers.isBlank()) {
             return 0;
         } else {
-            String delimiter = ",";
-            if (numbers.matches("//(.*)\n(.*)")) {
-                delimiter = Character.toString(numbers.charAt(2));
-                numbers = numbers.substring(4);
+            ArrayList<String> delimiterAndContent = findDelimiterAndContent(numbers);
+            String delimiter = delimiterAndContent.get(0);
+            if(!delimiter.equals(",")) {
+                numbers = delimiterAndContent.get(1);
             }
+            delimiter = Pattern.quote(delimiter);
             String[] numbersArray = numbers.split(delimiter + "|\n");
             return arraySum(numbersArray);
         }
+    }
+
+    ArrayList<String> findDelimiterAndContent(String content) {
+        ArrayList<String> delimiterAndContent = new ArrayList<>();
+        String delimiter = ",";
+        String regex = "//(.*)\n(.*)";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(content);
+        if (matcher.find()) {
+            String tempDelimiter = matcher.group(1);
+            if(tempDelimiter.matches("\\[(.+)\\]")) {
+                tempDelimiter = tempDelimiter.substring(1, tempDelimiter.length() - 1);
+            }
+            delimiter = tempDelimiter;
+            content = matcher.group(2);
+        }
+        delimiterAndContent.add(delimiter);
+        delimiterAndContent.add(content);
+        return delimiterAndContent;
     }
 
     int arraySum(String[] numbersArray) {
